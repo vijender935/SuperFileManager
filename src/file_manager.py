@@ -1,7 +1,3 @@
-# SuperFileManager
-# file_manager.py
-# Version: 1.8
-
 from pathlib import Path
 
 
@@ -106,6 +102,22 @@ def get_image_color_depth(file):
         }
 
         return color_depth.get(mode, "Unknown")
+
+    except Exception:
+        return "Unknown"
+
+
+def get_image_dpi(file):
+    try:
+        from PIL import Image
+
+        with Image.open(file) as img:
+            dpi = img.info.get("dpi")
+
+        if dpi:
+            return f"{int(dpi[0])} × {int(dpi[1])}"
+
+        return "Not Available"
 
     except Exception:
         return "Unknown"

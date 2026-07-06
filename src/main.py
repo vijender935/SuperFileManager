@@ -1,7 +1,3 @@
-# SuperFileManager
-# main.py
-# Version: 1.8
-
 from config import (
     PROJECT_NAME,
     VERSION,
@@ -23,6 +19,7 @@ from file_manager import (
     get_image_orientation,
     get_image_mode,
     get_image_color_depth,
+    get_image_dpi,
 )
 
 
@@ -79,6 +76,7 @@ def main():
                 print(f"    Orientation: {get_image_orientation(file)}")
                 print(f"    Mode: {get_image_mode(file)}")
                 print(f"    Color Depth: {get_image_color_depth(file)}")
+                print(f"    DPI: {get_image_dpi(file)}")
 
             print(f"\nTotal Files: {len(files)}")
             print(f"Total Size: {total_size / (1024 * 1024):.2f} MB")
