@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 2.2
+# Version: 2.3
 
 from config import (
     PROJECT_NAME,
@@ -27,6 +27,7 @@ from file_manager import (
     rename_file,
     copy_file,
     move_file,
+    delete_file,
 )
 
 
@@ -95,6 +96,7 @@ def main():
     print("1. Rename File")
     print("2. Copy File")
     print("3. Move File")
+    print("4. Delete File")
     print("0. Exit")
 
     choice = input("\nEnter your choice: ").strip()
@@ -133,6 +135,22 @@ def main():
                 print(f"\n✅ Moved to: {result}")
             else:
                 print(f"\n❌ {result}")
+
+    elif choice == "4":
+        number = int(input("Enter file number: ")) - 1
+
+        if 0 <= number < len(files):
+            confirm = input("Are you sure? (y/n): ").strip().lower()
+
+            if confirm == "y":
+                success, result = delete_file(files[number])
+
+                if success:
+                    print(f"\n✅ {result}")
+                else:
+                    print(f"\n❌ {result}")
+            else:
+                print("\n❌ Delete cancelled.")
 
     elif choice == "0":
         print("Goodbye!")

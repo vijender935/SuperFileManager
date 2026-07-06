@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 2.2
+# Version: 2.3
 
 from pathlib import Path
 from shutil import copy2, move
@@ -41,6 +41,7 @@ def get_image_format(file):
 
         with Image.open(file) as img:
             return img.format
+
     except Exception:
         return "Unknown"
 
@@ -51,7 +52,9 @@ def get_image_resolution(file):
 
         with Image.open(file) as img:
             width, height = img.size
+
         return f"{width} × {height}"
+
     except Exception:
         return "Unknown"
 
@@ -80,6 +83,7 @@ def get_image_mode(file):
 
         with Image.open(file) as img:
             return img.mode
+
     except Exception:
         return "Unknown"
 
@@ -156,6 +160,15 @@ def move_file(file, destination_folder):
         move(str(file), str(destination))
 
         return True, destination
+
+    except Exception as e:
+        return False, str(e)
+
+
+def delete_file(file):
+    try:
+        file.unlink()
+        return True, "File deleted successfully."
 
     except Exception as e:
         return False, str(e)
