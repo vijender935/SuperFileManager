@@ -70,14 +70,3 @@ def get_image_orientation(file):
 
     except Exception:
         return "Unknown"
-
-
-def get_image_mode(file):
-    try:
-        from PIL import Image
-
-        with Image.open(file) as img:
-            return img.mode
-
-    except Exception:
-        return "Unknown"
