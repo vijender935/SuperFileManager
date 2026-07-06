@@ -4,8 +4,8 @@ from pathlib import Path
 PROJECT_NAME = "SuperFileManager"
 VERSION = "1.0.0"
 
-# ========= PROJECT ROOT =========
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+# ========= PHONE STORAGE ROOT =========
+PROJECT_ROOT = Path("/storage/emulated/0/SuperFileManager")
 
 # ========= PROJECT FOLDERS =========
 INPUT_DIR = PROJECT_ROOT / "input"
