@@ -1,3 +1,7 @@
+# SuperFileManager
+# file_manager.py
+# Version: 1.8
+
 from pathlib import Path
 
 
@@ -78,6 +82,30 @@ def get_image_mode(file):
 
         with Image.open(file) as img:
             return img.mode
+
+    except Exception:
+        return "Unknown"
+
+
+def get_image_color_depth(file):
+    try:
+        from PIL import Image
+
+        with Image.open(file) as img:
+            mode = img.mode
+
+        color_depth = {
+            "1": "1-bit",
+            "L": "8-bit",
+            "P": "8-bit",
+            "RGB": "24-bit",
+            "RGBA": "32-bit",
+            "CMYK": "32-bit",
+            "I": "32-bit",
+            "F": "32-bit",
+        }
+
+        return color_depth.get(mode, "Unknown")
 
     except Exception:
         return "Unknown"
