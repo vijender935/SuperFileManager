@@ -1,22 +1,30 @@
 from pathlib import Path
-import shutil
 
 
-def create_folder(folder_path):
-    Path(folder_path).mkdir(parents=True, exist_ok=True)
+def create_folder(folder):
+    folder.mkdir(parents=True, exist_ok=True)
 
 
-def folder_exists(folder_path):
-    return Path(folder_path).exists()
+def folder_exists(folder):
+    return folder.exists() and folder.is_dir()
 
 
-def create_file(file_path):
-    Path(file_path).touch(exist_ok=True)
+def list_files(folder):
+    files = []
+
+    for file in folder.iterdir():
+        if file.is_file():
+            files.append(file)
+
+    return files
 
 
-def file_exists(file_path):
-    return Path(file_path).exists()
+def get_file_size(file):
+    size = file.stat().st_size
 
-
-def list_files(folder_path):
-    return list(Path(folder_path).iterdir())
+    if size < 1024:
+        return f"{size} Bytes"
+    elif size < 1024 * 1024:
+        return f"{size / 1024:.2f} KB"
+    else:
+        return f"{size / (1024 * 1024):.2f} MB"
