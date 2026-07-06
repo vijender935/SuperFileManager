@@ -1,4 +1,9 @@
+# SuperFileManager
+# file_manager.py
+# Version: 2.2
+
 from pathlib import Path
+from shutil import copy2, move
 
 
 def create_folder(folder):
@@ -36,7 +41,6 @@ def get_image_format(file):
 
         with Image.open(file) as img:
             return img.format
-
     except Exception:
         return "Unknown"
 
@@ -47,9 +51,7 @@ def get_image_resolution(file):
 
         with Image.open(file) as img:
             width, height = img.size
-
         return f"{width} × {height}"
-
     except Exception:
         return "Unknown"
 
@@ -78,7 +80,6 @@ def get_image_mode(file):
 
         with Image.open(file) as img:
             return img.mode
-
     except Exception:
         return "Unknown"
 
@@ -121,3 +122,40 @@ def get_image_dpi(file):
 
     except Exception:
         return "Unknown"
+
+
+def rename_file(file, new_name):
+    try:
+        extension = file.suffix
+        new_file = file.with_name(new_name + extension)
+
+        file.rename(new_file)
+
+        return True, new_file
+
+    except Exception as e:
+        return False, str(e)
+
+
+def copy_file(file, destination_folder):
+    try:
+        destination = destination_folder / file.name
+
+        copy2(file, destination)
+
+        return True, destination
+
+    except Exception as e:
+        return False, str(e)
+
+
+def move_file(file, destination_folder):
+    try:
+        destination = destination_folder / file.name
+
+        move(str(file), str(destination))
+
+        return True, destination
+
+    except Exception as e:
+        return False, str(e)
