@@ -16,6 +16,7 @@ from file_manager import (
     get_file_size,
     get_image_resolution,
     get_image_format,
+    get_image_orientation,
 )
 
 
@@ -33,7 +34,7 @@ def check_folders():
         BACKUP_DIR,
         LOG_DIR,
         DOCS_DIR,
-        TESTS_DIR,
+        TESTS_DIR
     ]
 
     for folder in folders:
@@ -66,9 +67,10 @@ def main():
                 size = file.stat().st_size
                 total_size += size
 
-                print(f"   Size: {get_file_size(file)}")
-                print(f"   Resolution: {get_image_resolution(file)}")
-                print(f"   Format: {get_image_format(file)}")
+                print(f"    Size: {get_file_size(file)}")
+                print(f"    Resolution: {get_image_resolution(file)}")
+                print(f"    Format: {get_image_format(file)}")
+                print(f"    Orientation: {get_image_orientation(file)}")
 
             print(f"\nTotal Files: {len(files)}")
             print(f"Total Size: {total_size / (1024 * 1024):.2f} MB")

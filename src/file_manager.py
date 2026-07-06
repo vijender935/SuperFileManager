@@ -52,3 +52,21 @@ def get_image_resolution(file):
 
     except Exception:
         return "Unknown"
+
+
+def get_image_orientation(file):
+    try:
+        from PIL import Image
+
+        with Image.open(file) as img:
+            width, height = img.size
+
+        if width > height:
+            return "Landscape"
+        elif height > width:
+            return "Portrait"
+        else:
+            return "Square"
+
+    except Exception:
+        return "Unknown"
