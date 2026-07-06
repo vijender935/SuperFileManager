@@ -6,11 +6,13 @@ from config import (
     BACKUP_DIR,
     LOG_DIR,
     DOCS_DIR,
-    TESTS_DIR
+    TESTS_DIR,
 )
 
-
-from file_manager import create_folder
+from file_manager import (
+    create_folder,
+    folder_exists,
+)
 
 
 def show_banner():
@@ -27,7 +29,7 @@ def check_folders():
         BACKUP_DIR,
         LOG_DIR,
         DOCS_DIR,
-        TESTS_DIR
+        TESTS_DIR,
     ]
 
     for folder in folders:
@@ -37,8 +39,15 @@ def check_folders():
 
 def main():
     show_banner()
+
     check_folders()
+
     print("\nProject Setup Completed Successfully!")
+
+    print("\nChecking Input Folder...")
+
+    if folder_exists(INPUT_DIR):
+        print("✅ Input Folder Found")
 
 
 if __name__ == "__main__":
