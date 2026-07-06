@@ -28,3 +28,27 @@ def get_file_size(file):
         return f"{size / 1024:.2f} KB"
     else:
         return f"{size / (1024 * 1024):.2f} MB"
+
+
+def get_image_format(file):
+    try:
+        from PIL import Image
+
+        with Image.open(file) as img:
+            return img.format
+
+    except Exception:
+        return "Unknown"
+
+
+def get_image_resolution(file):
+    try:
+        from PIL import Image
+
+        with Image.open(file) as img:
+            width, height = img.size
+
+        return f"{width} × {height}"
+
+    except Exception:
+        return "Unknown"
