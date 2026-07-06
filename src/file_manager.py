@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 2.3
+# Version: 2.4
 
 from pathlib import Path
 from shutil import copy2, move
@@ -128,6 +128,35 @@ def get_image_dpi(file):
         return "Unknown"
 
 
+def get_unique_filename(destination_folder, file_name):
+    """
+    Return a unique filename if the same name already exists.
+    Example:
+    photo.jpg
+    photo (1).jpg
+    photo (2).jpg
+    """
+
+    destination = destination_folder / file_name
+
+    if not destination.exists():
+        return destination
+
+    stem = destination.stem
+    suffix = destination.suffix
+
+    counter = 1
+
+    while True:
+        new_name = f"{stem} ({counter}){suffix}"
+        new_destination = destination_folder / new_name
+
+        if not new_destination.exists():
+            return new_destination
+
+        counter += 1
+
+
 def rename_file(file, new_name):
     try:
         extension = file.suffix
@@ -143,7 +172,7 @@ def rename_file(file, new_name):
 
 def copy_file(file, destination_folder):
     try:
-        destination = destination_folder / file.name
+        destination = get_unique_filename(destination_folder, file.name)
 
         copy2(file, destination)
 
@@ -155,7 +184,7 @@ def copy_file(file, destination_folder):
 
 def move_file(file, destination_folder):
     try:
-        destination = destination_folder / file.name
+        destination = get_unique_filename(destination_folder, file.name)
 
         move(str(file), str(destination))
 
@@ -168,6 +197,7 @@ def move_file(file, destination_folder):
 def delete_file(file):
     try:
         file.unlink()
+
         return True, "File deleted successfully."
 
     except Exception as e:

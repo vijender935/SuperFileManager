@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 2.3
+# Version: 2.4
 
 from config import (
     PROJECT_NAME,
@@ -121,7 +121,8 @@ def main():
             success, result = copy_file(files[number], OUTPUT_DIR)
 
             if success:
-                print(f"\n✅ Copied to: {result}")
+                print(f"\n✅ Copied successfully!")
+                print(f"Destination: {result}")
             else:
                 print(f"\n❌ {result}")
 
@@ -132,7 +133,8 @@ def main():
             success, result = move_file(files[number], OUTPUT_DIR)
 
             if success:
-                print(f"\n✅ Moved to: {result}")
+                print(f"\n✅ Moved successfully!")
+                print(f"Destination: {result}")
             else:
                 print(f"\n❌ {result}")
 
