@@ -1,7 +1,8 @@
 # SuperFileManager
 # main.py
-# Version: 2.4
+# Version: 2.6
 
+from logger import write_log
 from config import (
     PROJECT_NAME,
     VERSION,
@@ -109,8 +110,12 @@ def main():
 
         success, result = rename_file(files[number], new_name)
 
-        if success:                                         # Fix 1: extra indent hataya
+        if success:
             print(f"\n✅ Renamed to: {result.name}")
+            write_log(                                      # Fix 1: sahi indent pe laya
+                "RENAME",
+                f"{files[number].name} -> {result.name}"
+            )
         else:
             print(f"\n❌ {result}")
 
@@ -119,9 +124,13 @@ def main():
 
         success, result = copy_file(files[number], OUTPUT_DIR)
 
-        if success:                                         # Fix 2: extra indent hataya
+        if success:
             print(f"\n✅ Copied successfully!")
             print(f"Destination: {result}")
+            write_log(                                      # Fix 2: sahi indent pe laya
+                "COPY",
+                f"{files[number].name} -> {result.name}"
+            )
         else:
             print(f"\n❌ {result}")
 
@@ -130,9 +139,13 @@ def main():
 
         success, result = move_file(files[number], OUTPUT_DIR)
 
-        if success:                                         # Fix 3: extra indent hataya
+        if success:
             print(f"\n✅ Moved successfully!")
             print(f"Destination: {result}")
+            write_log(                                      # Fix 3: sahi indent pe laya
+                "MOVE",
+                f"{files[number].name} -> {result.name}"
+            )
         else:
             print(f"\n❌ {result}")
 
@@ -144,17 +157,21 @@ def main():
         if confirm == "y":
             success, result = delete_file(files[number])
 
-            if success:                                     # Fix 4: if success ko andar laya
+            if success:
                 print(f"\n✅ {result}")
-            else:                                           # Fix 5: else bhi sahi jagah
+                write_log(                                  # Fix 4: sahi indent pe laya
+                    "DELETE",
+                    files[number].name
+                )
+            else:
                 print(f"\n❌ {result}")
         else:
-            print("\n❌ Delete cancelled.")                 # Fix 6: ye 'confirm != y' ka case hai
+            print("\n❌ Delete cancelled.")
 
-    elif choice == "0":                                     # Fix 7: main() ke andar laya
+    elif choice == "0":
         print("Goodbye!")
 
-    else:                                                   # Fix 8: main() ke andar laya
+    else:
         print("❌ Invalid choice.")
 
 
