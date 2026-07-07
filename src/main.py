@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 2.6
+# Version: 2.7
 
 from logger import write_log
 from config import (
@@ -29,6 +29,7 @@ from file_manager import (
     copy_file,
     move_file,
     delete_file,
+    batch_rename,
     get_valid_file,
     get_non_empty_name,
 )
@@ -100,6 +101,7 @@ def main():
     print("2. Copy File")
     print("3. Move File")
     print("4. Delete File")
+    print("5. Batch Rename")
     print("0. Exit")
 
     choice = input("\nEnter your choice: ").strip()
@@ -112,7 +114,7 @@ def main():
 
         if success:
             print(f"\n✅ Renamed to: {result.name}")
-            write_log(                                      # Fix 1: sahi indent pe laya
+            write_log(
                 "RENAME",
                 f"{files[number].name} -> {result.name}"
             )
@@ -127,7 +129,7 @@ def main():
         if success:
             print(f"\n✅ Copied successfully!")
             print(f"Destination: {result}")
-            write_log(                                      # Fix 2: sahi indent pe laya
+            write_log(
                 "COPY",
                 f"{files[number].name} -> {result.name}"
             )
@@ -142,7 +144,7 @@ def main():
         if success:
             print(f"\n✅ Moved successfully!")
             print(f"Destination: {result}")
-            write_log(                                      # Fix 3: sahi indent pe laya
+            write_log(
                 "MOVE",
                 f"{files[number].name} -> {result.name}"
             )
@@ -159,7 +161,7 @@ def main():
 
             if success:
                 print(f"\n✅ {result}")
-                write_log(                                  # Fix 4: sahi indent pe laya
+                write_log(
                     "DELETE",
                     files[number].name
                 )
@@ -167,6 +169,25 @@ def main():
                 print(f"\n❌ {result}")
         else:
             print("\n❌ Delete cancelled.")
+
+    elif choice == "5":
+        prefix = input("Enter file name prefix: ").strip()
+
+        if not prefix:
+            print("\n❌ Prefix cannot be empty.")
+            return
+
+        renamed_files = batch_rename(files, prefix)
+
+        print("\n✅ Batch Rename Completed!\n")
+
+        for old_name, new_name in renamed_files:
+            print(f"{old_name}  →  {new_name}")
+
+            write_log(
+                "BATCH RENAME",
+                f"{old_name} -> {new_name}"
+            )
 
     elif choice == "0":
         print("Goodbye!")

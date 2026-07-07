@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 2.4
+# Version: 2.7
 
 from pathlib import Path
 from shutil import copy2, move
@@ -171,7 +171,7 @@ def rename_file(file, new_name):
 
 
 def copy_file(file, destination_folder):
-    try:
+    try:                                                        # Fix: try ke baad nayi line
         destination = get_unique_filename(destination_folder, file.name)
 
         copy2(file, destination)
@@ -202,6 +202,24 @@ def delete_file(file):
 
     except Exception as e:
         return False, str(e)
+
+
+def batch_rename(files, prefix):
+    renamed = []
+
+    files = sorted(files)
+
+    for i, file in enumerate(files, start=1):
+        extension = file.suffix
+        new_name = f"{prefix}_{i:03}{extension}"
+
+        new_file = file.with_name(new_name)
+
+        file.rename(new_file)
+
+        renamed.append((file.name, new_file.name))
+
+    return renamed
 
 
 def get_valid_file(files):
