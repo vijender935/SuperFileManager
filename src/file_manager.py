@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 4.2
+# Version: 5.0
 
 from pathlib import Path
 from shutil import copy2, move
@@ -318,3 +318,20 @@ def sort_files(files, option):
         return sorted(files, key=lambda file: file.stat().st_mtime)
 
     return files
+
+
+def get_statistics(files):
+    total_files = len(files)
+
+    total_size = sum(file.stat().st_size for file in files)
+
+    image_files = sum(
+        1 for file in files
+        if file.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp")
+    )
+
+    return {
+        "total_files": total_files,
+        "total_size": total_size,
+        "image_files": image_files,
+    }

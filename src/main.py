@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 4.2
+# Version: 5.0
 
 from logger import write_log
 from config import (
@@ -36,6 +36,7 @@ from file_manager import (
     search_files,
     filter_files,
     sort_files,
+    get_statistics,
     get_valid_file,
     get_non_empty_name,
 )
@@ -99,6 +100,7 @@ def show_menu():
     print("9. Search File")
     print("10. Filter Files")
     print("11. Sort Files")
+    print("12. File Statistics")
     print("0. Exit")
 
 
@@ -293,6 +295,23 @@ def sort_menu(files):
     write_log("SORT", option)
 
 
+def statistics_menu(files):
+    stats = get_statistics(files)
+
+    print("\n========== Statistics ==========")
+
+    print(f"Total Files : {stats['total_files']}")
+
+    print(
+        f"Total Size  : "
+        f"{stats['total_size'] / (1024 * 1024):.2f} MB"
+    )
+
+    print(f"Image Files : {stats['image_files']}")
+
+    write_log("STATISTICS", "Viewed")
+
+
 def main():
     show_banner()
     check_folders()
@@ -345,6 +364,9 @@ def main():
 
     elif choice == "11":
         sort_menu(files)
+
+    elif choice == "12":
+        statistics_menu(files)
 
     elif choice == "0":
         print("Goodbye!")
