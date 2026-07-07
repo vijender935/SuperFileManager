@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 2.8
+# Version: 2.9
 
 from pathlib import Path
 from shutil import copy2, move
@@ -232,6 +232,18 @@ def batch_copy(files, destination_folder):
             copied.append((file.name, result.name))
 
     return copied
+
+
+def batch_move(files, destination_folder):
+    moved = []
+
+    for file in files:
+        success, result = move_file(file, destination_folder)
+
+        if success:
+            moved.append((file.name, result.name))
+
+    return moved
 
 
 def get_valid_file(files):
