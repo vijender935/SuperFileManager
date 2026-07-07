@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 3.1
+# Version: 4.0
 
 from logger import write_log
 from config import (
@@ -33,6 +33,7 @@ from file_manager import (
     batch_copy,
     batch_move,
     batch_delete,
+    search_files,
     get_valid_file,
     get_non_empty_name,
 )
@@ -93,6 +94,7 @@ def show_menu():
     print("6. Batch Copy")
     print("7. Batch Move")
     print("8. Batch Delete")
+    print("9. Search File")
     print("0. Exit")
 
 
@@ -211,6 +213,33 @@ def batch_delete_menu(files):
         write_log("BATCH DELETE", file_name)
 
 
+def search_menu(files):
+    keyword = input(
+        "\nEnter file name to search: "
+    ).strip()
+
+    if not keyword:
+        print("\n❌ Search text cannot be empty.")
+        return
+
+    results = search_files(files, keyword)
+
+    if not results:
+        print("\n❌ No matching files found.")
+        return
+
+    print(f"\n✅ Found {len(results)} file(s):\n")
+
+    for i, file in enumerate(results, start=1):
+        print(f"{i}. {file.name}")
+        print(f"   Size: {get_file_size(file)}")
+
+    write_log(
+        "SEARCH",
+        keyword
+    )
+
+
 def main():
     show_banner()
     check_folders()
@@ -254,6 +283,9 @@ def main():
 
     elif choice == "8":
         batch_delete_menu(files)
+
+    elif choice == "9":
+        search_menu(files)
 
     elif choice == "0":
         print("Goodbye!")

@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 3.0
+# Version: 4.0
 
 from pathlib import Path
 from shutil import copy2, move
@@ -280,3 +280,15 @@ def get_non_empty_name():
             return name
 
         print("❌ File name cannot be empty.")
+
+
+def search_files(files, keyword):
+    keyword = keyword.lower().strip()
+
+    results = []
+
+    for file in files:
+        if keyword in file.name.lower():
+            results.append(file)
+
+    return results
