@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 3.0
+# Version: 3.1
 
 from logger import write_log
 from config import (
@@ -83,6 +83,134 @@ def show_files(files):
     print(f"Total Size: {total_size / (1024 * 1024):.2f} MB")
 
 
+def show_menu():
+    print("\n========== MENU ==========")
+    print("1. Rename File")
+    print("2. Copy File")
+    print("3. Move File")
+    print("4. Delete File")
+    print("5. Batch Rename")
+    print("6. Batch Copy")
+    print("7. Batch Move")
+    print("8. Batch Delete")
+    print("0. Exit")
+
+
+def get_choice():
+    return input("\nEnter your choice: ").strip()
+
+
+def rename_menu(files):
+    number = get_valid_file(files)
+    new_name = get_non_empty_name()
+
+    success, result = rename_file(files[number], new_name)
+
+    if success:
+        print(f"\n✅ Renamed to: {result.name}")
+        write_log("RENAME", f"{files[number].name} -> {result.name}")
+    else:
+        print(f"\n❌ {result}")
+
+
+def copy_menu(files):
+    number = get_valid_file(files)
+
+    success, result = copy_file(files[number], OUTPUT_DIR)
+
+    if success:
+        print("\n✅ Copied successfully!")
+        print(f"Destination: {result}")
+        write_log("COPY", f"{files[number].name} -> {result.name}")
+    else:
+        print(f"\n❌ {result}")
+
+
+def move_menu(files):
+    number = get_valid_file(files)
+
+    success, result = move_file(files[number], OUTPUT_DIR)
+
+    if success:
+        print("\n✅ Moved successfully!")
+        print(f"Destination: {result}")
+        write_log("MOVE", f"{files[number].name} -> {result.name}")
+    else:
+        print(f"\n❌ {result}")
+
+
+def delete_menu(files):
+    number = get_valid_file(files)
+
+    confirm = input("Are you sure? (y/n): ").strip().lower()
+
+    if confirm != "y":
+        print("\n❌ Delete cancelled.")
+        return
+
+    success, result = delete_file(files[number])
+
+    if success:
+        print(f"\n✅ {result}")
+        write_log("DELETE", files[number].name)
+    else:
+        print(f"\n❌ {result}")
+
+
+def batch_rename_menu(files):
+    prefix = input("Enter file name prefix: ").strip()
+
+    if not prefix:
+        print("\n❌ Prefix cannot be empty.")
+        return
+
+    renamed_files = batch_rename(files, prefix)
+
+    print("\n✅ Batch Rename Completed!\n")
+
+    for old_name, new_name in renamed_files:
+        print(f"{old_name} → {new_name}")
+        write_log("BATCH RENAME", f"{old_name} -> {new_name}")
+
+
+def batch_copy_menu(files):
+    copied_files = batch_copy(files, OUTPUT_DIR)
+
+    print("\n✅ Batch Copy Completed!\n")
+
+    for old_name, new_name in copied_files:
+        print(f"{old_name} → {new_name}")
+        write_log("BATCH COPY", f"{old_name} -> {new_name}")
+
+
+def batch_move_menu(files):
+    moved_files = batch_move(files, OUTPUT_DIR)
+
+    print("\n✅ Batch Move Completed!\n")
+
+    for old_name, new_name in moved_files:
+        print(f"{old_name} → {new_name}")
+        write_log("BATCH MOVE", f"{old_name} -> {new_name}")
+
+
+def batch_delete_menu(files):
+    confirm = input(
+        "\nDelete ALL files from Input folder? (y/n): "
+    ).strip().lower()
+
+    if confirm != "y":
+        print("\n❌ Batch Delete Cancelled.")
+        return
+
+    deleted_files = batch_delete(files)
+
+    print("\n✅ Batch Delete Completed!\n")
+
+    for file_name in deleted_files:
+        print(file_name)
+        write_log("BATCH DELETE", file_name)
+
+
 def main():
     show_banner()
     check_folders()
@@ -99,148 +227,33 @@ def main():
 
     show_files(files)
 
-    print("\n========== MENU ==========")
-    print("1. Rename File")
-    print("2. Copy File")
-    print("3. Move File")
-    print("4. Delete File")
-    print("5. Batch Rename")
-    print("6. Batch Copy")
-    print("7. Batch Move")
-    print("8. Batch Delete")
-    print("0. Exit")
+    show_menu()
 
-    choice = input("\nEnter your choice: ").strip()
+    choice = get_choice()
 
     if choice == "1":
-        number = get_valid_file(files)
-        new_name = get_non_empty_name()
-
-        success, result = rename_file(files[number], new_name)
-
-        if success:
-            print(f"\n✅ Renamed to: {result.name}")
-            write_log(
-                "RENAME",
-                f"{files[number].name} -> {result.name}"
-            )
-        else:
-            print(f"\n❌ {result}")
+        rename_menu(files)
 
     elif choice == "2":
-        number = get_valid_file(files)
-
-        success, result = copy_file(files[number], OUTPUT_DIR)
-
-        if success:
-            print(f"\n✅ Copied successfully!")
-            print(f"Destination: {result}")
-            write_log(
-                "COPY",
-                f"{files[number].name} -> {result.name}"
-            )
-        else:
-            print(f"\n❌ {result}")
+        copy_menu(files)
 
     elif choice == "3":
-        number = get_valid_file(files)
-
-        success, result = move_file(files[number], OUTPUT_DIR)
-
-        if success:
-            print(f"\n✅ Moved successfully!")
-            print(f"Destination: {result}")
-            write_log(
-                "MOVE",
-                f"{files[number].name} -> {result.name}"
-            )
-        else:
-            print(f"\n❌ {result}")
+        move_menu(files)
 
     elif choice == "4":
-        number = get_valid_file(files)
-
-        confirm = input("Are you sure? (y/n): ").strip().lower()
-
-        if confirm == "y":
-            success, result = delete_file(files[number])
-
-            if success:
-                print(f"\n✅ {result}")
-                write_log(
-                    "DELETE",
-                    files[number].name
-                )
-            else:
-                print(f"\n❌ {result}")
-        else:
-            print("\n❌ Delete cancelled.")
+        delete_menu(files)
 
     elif choice == "5":
-        prefix = input("Enter file name prefix: ").strip()
-
-        if not prefix:
-            print("\n❌ Prefix cannot be empty.")
-            return
-
-        renamed_files = batch_rename(files, prefix)
-
-        print("\n✅ Batch Rename Completed!\n")
-
-        for old_name, new_name in renamed_files:
-            print(f"{old_name}  →  {new_name}")
-
-            write_log(
-                "BATCH RENAME",
-                f"{old_name} -> {new_name}"
-            )
+        batch_rename_menu(files)
 
     elif choice == "6":
-        copied_files = batch_copy(files, OUTPUT_DIR)
-
-        print("\n✅ Batch Copy Completed!\n")
-
-        for old_name, new_name in copied_files:
-            print(f"{old_name}  →  {new_name}")
-
-            write_log(
-                "BATCH COPY",
-                f"{old_name} -> {new_name}"
-            )
+        batch_copy_menu(files)
 
     elif choice == "7":
-        moved_files = batch_move(files, OUTPUT_DIR)
-
-        print("\n✅ Batch Move Completed!\n")
-
-        for old_name, new_name in moved_files:
-            print(f"{old_name}  →  {new_name}")
-
-            write_log(
-                "BATCH MOVE",
-                f"{old_name} -> {new_name}"
-            )
+        batch_move_menu(files)
 
     elif choice == "8":
-        confirm = input(
-            "\nDelete ALL files from Input folder? (y/n): "
-        ).strip().lower()
-
-        if confirm != "y":
-            print("\n❌ Batch Delete Cancelled.")
-            return
-
-        deleted_files = batch_delete(files)
-
-        print("\n✅ Batch Delete Completed!\n")
-
-        for file_name in deleted_files:
-            print(file_name)
-
-            write_log(
-                "BATCH DELETE",
-                file_name
-            )
+        batch_delete_menu(files)
 
     elif choice == "0":
         print("Goodbye!")
