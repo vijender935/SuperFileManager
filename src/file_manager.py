@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 6.2
+# Version: 6.3
 
 from pathlib import Path
 from shutil import copy2, move
@@ -365,6 +365,38 @@ def convert_image(source, destination, image_format):
 
     except Exception as e:
         return False, str(e)
+
+
+def batch_convert(files, output_folder, image_format):
+    converted_files = []
+
+    extension_map = {
+        "JPEG": "jpg",
+        "PNG": "png",
+        "WEBP": "webp",
+    }
+
+    output_folder.mkdir(parents=True, exist_ok=True)
+
+    for file in files:
+
+        destination = (
+            output_folder
+            / f"{file.stem}.{extension_map[image_format]}"
+        )
+
+        success, result = convert_image(
+            file,
+            destination,
+            image_format,
+        )
+
+        if success:
+            converted_files.append(
+                (file.name, result.name)
+            )
+
+    return converted_files
 
 
 def batch_resize(files, output_folder, width, height):

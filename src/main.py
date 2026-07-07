@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 6.2
+# Version: 6.3
 
 from logger import write_log
 from config import (
@@ -43,6 +43,7 @@ from file_manager import (
     resize_image,
     batch_resize,
     convert_image,
+    batch_convert,
     get_valid_file,
     get_non_empty_name,
 )
@@ -110,6 +111,7 @@ def show_menu():
     print("13. Resize Image")
     print("14. Batch Resize Images")
     print("15. Convert Image Format")
+    print("16. Batch Convert Images")
     print("0. Exit")
 
 
@@ -457,6 +459,37 @@ def main():
 
         else:
             print(f"\n❌ {result}")
+
+    elif choice == "16":
+        fmt = input(
+            "Convert all images to (jpg/png/webp): "
+        ).strip().lower()
+
+        formats = {
+            "jpg": "JPEG",
+            "png": "PNG",
+            "webp": "WEBP",
+        }
+
+        if fmt not in formats:
+            print("\n❌ Invalid format.")
+            return
+
+        converted_files = batch_convert(
+            files,
+            OUTPUT_DIR,
+            formats[fmt],
+        )
+
+        print("\n✅ Batch Conversion Completed!\n")
+
+        for old_name, new_name in converted_files:
+            print(f"{old_name}  →  {new_name}")
+
+            write_log(
+                "BATCH CONVERT",
+                f"{old_name} -> {new_name}"
+            )
 
     elif choice == "0":
         print("Goodbye!")
