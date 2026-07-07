@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 6.1
+# Version: 6.2
 
 from pathlib import Path
 from shutil import copy2, move
@@ -345,6 +345,21 @@ def resize_image(source, destination, width, height):
         with Image.open(source) as img:
             resized = img.resize((width, height), Image.LANCZOS)
             resized.save(destination)
+
+        return True, destination
+
+    except Exception as e:
+        return False, str(e)
+
+
+def convert_image(source, destination, image_format):
+    try:
+        with Image.open(source) as img:
+
+            if image_format.upper() == "JPEG":
+                img = img.convert("RGB")
+
+            img.save(destination, image_format)
 
         return True, destination
 

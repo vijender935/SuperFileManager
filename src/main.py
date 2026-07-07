@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 6.1
+# Version: 6.2
 
 from logger import write_log
 from config import (
@@ -42,6 +42,7 @@ from file_manager import (
     get_statistics,
     resize_image,
     batch_resize,
+    convert_image,
     get_valid_file,
     get_non_empty_name,
 )
@@ -108,6 +109,7 @@ def show_menu():
     print("12. File Statistics")
     print("13. Resize Image")
     print("14. Batch Resize Images")
+    print("15. Convert Image Format")
     print("0. Exit")
 
 
@@ -416,6 +418,45 @@ def main():
                 "BATCH RESIZE",
                 f"{old_name} -> {new_name}"
             )
+
+    elif choice == "15":
+        number = get_valid_file(files)
+
+        fmt = input(
+            "Enter format (jpg/png/webp): "
+        ).strip().lower()
+
+        formats = {
+            "jpg": "JPEG",
+            "png": "PNG",
+            "webp": "WEBP",
+        }
+
+        if fmt not in formats:
+            print("\n❌ Invalid format.")
+            return
+
+        destination = OUTPUT_DIR / (
+            files[number].stem + "." + fmt
+        )
+
+        success, result = convert_image(
+            files[number],
+            destination,
+            formats[fmt],
+        )
+
+        if success:
+            print("\n✅ Image converted successfully!")
+            print(result)
+
+            write_log(
+                "CONVERT",
+                f"{files[number].name} -> {result.name}"
+            )
+
+        else:
+            print(f"\n❌ {result}")
 
     elif choice == "0":
         print("Goodbye!")
