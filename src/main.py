@@ -28,6 +28,8 @@ from file_manager import (
     copy_file,
     move_file,
     delete_file,
+    get_valid_file,
+    get_non_empty_name,
 )
 
 
@@ -102,62 +104,57 @@ def main():
     choice = input("\nEnter your choice: ").strip()
 
     if choice == "1":
-        number = int(input("Enter file number: ")) - 1
+        number = get_valid_file(files)
+        new_name = get_non_empty_name()
 
-        if 0 <= number < len(files):
-            new_name = input("Enter new file name (without extension): ").strip()
+        success, result = rename_file(files[number], new_name)
 
-            success, result = rename_file(files[number], new_name)
-
-            if success:
-                print(f"\n✅ Renamed to: {result.name}")
-            else:
-                print(f"\n❌ {result}")
+        if success:                                         # Fix 1: extra indent hataya
+            print(f"\n✅ Renamed to: {result.name}")
+        else:
+            print(f"\n❌ {result}")
 
     elif choice == "2":
-        number = int(input("Enter file number: ")) - 1
+        number = get_valid_file(files)
 
-        if 0 <= number < len(files):
-            success, result = copy_file(files[number], OUTPUT_DIR)
+        success, result = copy_file(files[number], OUTPUT_DIR)
 
-            if success:
-                print(f"\n✅ Copied successfully!")
-                print(f"Destination: {result}")
-            else:
-                print(f"\n❌ {result}")
+        if success:                                         # Fix 2: extra indent hataya
+            print(f"\n✅ Copied successfully!")
+            print(f"Destination: {result}")
+        else:
+            print(f"\n❌ {result}")
 
     elif choice == "3":
-        number = int(input("Enter file number: ")) - 1
+        number = get_valid_file(files)
 
-        if 0 <= number < len(files):
-            success, result = move_file(files[number], OUTPUT_DIR)
+        success, result = move_file(files[number], OUTPUT_DIR)
 
-            if success:
-                print(f"\n✅ Moved successfully!")
-                print(f"Destination: {result}")
-            else:
-                print(f"\n❌ {result}")
+        if success:                                         # Fix 3: extra indent hataya
+            print(f"\n✅ Moved successfully!")
+            print(f"Destination: {result}")
+        else:
+            print(f"\n❌ {result}")
 
     elif choice == "4":
-        number = int(input("Enter file number: ")) - 1
+        number = get_valid_file(files)
 
-        if 0 <= number < len(files):
-            confirm = input("Are you sure? (y/n): ").strip().lower()
+        confirm = input("Are you sure? (y/n): ").strip().lower()
 
-            if confirm == "y":
-                success, result = delete_file(files[number])
+        if confirm == "y":
+            success, result = delete_file(files[number])
 
-                if success:
-                    print(f"\n✅ {result}")
-                else:
-                    print(f"\n❌ {result}")
-            else:
-                print("\n❌ Delete cancelled.")
+            if success:                                     # Fix 4: if success ko andar laya
+                print(f"\n✅ {result}")
+            else:                                           # Fix 5: else bhi sahi jagah
+                print(f"\n❌ {result}")
+        else:
+            print("\n❌ Delete cancelled.")                 # Fix 6: ye 'confirm != y' ka case hai
 
-    elif choice == "0":
+    elif choice == "0":                                     # Fix 7: main() ke andar laya
         print("Goodbye!")
 
-    else:
+    else:                                                   # Fix 8: main() ke andar laya
         print("❌ Invalid choice.")
 
 

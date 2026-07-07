@@ -202,3 +202,27 @@ def delete_file(file):
 
     except Exception as e:
         return False, str(e)
+
+
+def get_valid_file(files):
+    while True:
+        try:
+            number = int(input("Enter file number: ")) - 1
+
+            if 0 <= number < len(files):
+                return number
+
+            print(f"❌ Please enter a number between 1 and {len(files)}.")
+
+        except ValueError:
+            print("❌ Please enter a valid number.")
+
+
+def get_non_empty_name():
+    while True:
+        name = input("Enter new file name (without extension): ").strip()
+
+        if name:
+            return name
+
+        print("❌ File name cannot be empty.")
