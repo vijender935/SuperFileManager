@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 5.0
+# Version: 6.1
 
 from logger import write_log
 from config import (
@@ -41,6 +41,7 @@ from file_manager import (
     sort_files,
     get_statistics,
     resize_image,
+    batch_resize,
     get_valid_file,
     get_non_empty_name,
 )
@@ -106,6 +107,7 @@ def show_menu():
     print("11. Sort Files")
     print("12. File Statistics")
     print("13. Resize Image")
+    print("14. Batch Resize Images")
     print("0. Exit")
 
 
@@ -396,6 +398,24 @@ def main():
 
         else:
             print(f"\n❌ {result}")
+
+    elif choice == "14":
+        resized_files = batch_resize(
+            files,
+            OUTPUT_DIR,
+            DEFAULT_WIDTH,
+            DEFAULT_HEIGHT,
+        )
+
+        print("\n✅ Batch Resize Completed!\n")
+
+        for old_name, new_name in resized_files:
+            print(f"{old_name}  →  {new_name}")
+
+            write_log(
+                "BATCH RESIZE",
+                f"{old_name} -> {new_name}"
+            )
 
     elif choice == "0":
         print("Goodbye!")

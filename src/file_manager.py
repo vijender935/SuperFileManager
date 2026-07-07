@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 5.0
+# Version: 6.1
 
 from pathlib import Path
 from shutil import copy2, move
@@ -350,3 +350,26 @@ def resize_image(source, destination, width, height):
 
     except Exception as e:
         return False, str(e)
+
+
+def batch_resize(files, output_folder, width, height):
+    resized_files = []
+
+    output_folder.mkdir(parents=True, exist_ok=True)
+
+    for file in files:
+        destination = output_folder / file.name
+
+        success, result = resize_image(
+            file,
+            destination,
+            width,
+            height,
+        )
+
+        if success:
+            resized_files.append(
+                (file.name, result.name)
+            )
+
+    return resized_files
