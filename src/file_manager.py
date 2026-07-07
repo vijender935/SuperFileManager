@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 4.1
+# Version: 4.2
 
 from pathlib import Path
 from shutil import copy2, move
@@ -304,3 +304,17 @@ def filter_files(files, extension):
             results.append(file)
 
     return results
+
+
+def sort_files(files, option):
+
+    if option == "1":
+        return sorted(files, key=lambda file: file.name.lower())
+
+    elif option == "2":
+        return sorted(files, key=lambda file: file.stat().st_size)
+
+    elif option == "3":
+        return sorted(files, key=lambda file: file.stat().st_mtime)
+
+    return files

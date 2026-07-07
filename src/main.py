@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 4.1
+# Version: 4.2
 
 from logger import write_log
 from config import (
@@ -35,6 +35,7 @@ from file_manager import (
     batch_delete,
     search_files,
     filter_files,
+    sort_files,
     get_valid_file,
     get_non_empty_name,
 )
@@ -97,6 +98,7 @@ def show_menu():
     print("8. Batch Delete")
     print("9. Search File")
     print("10. Filter Files")
+    print("11. Sort Files")
     print("0. Exit")
 
 
@@ -268,6 +270,29 @@ def filter_menu(files):
     )
 
 
+def sort_menu(files):
+    print("\nSort By")
+    print("1. Name")
+    print("2. Size")
+    print("3. Date")
+
+    option = input("\nChoose: ").strip()
+
+    if option not in ("1", "2", "3"):
+        print("\n❌ Invalid option.")
+        return
+
+    results = sort_files(files, option)
+
+    print("\n✅ Sorted Files:\n")
+
+    for i, file in enumerate(results, start=1):
+        print(f"{i}. {file.name}")
+        print(f"   {get_file_size(file)}")
+
+    write_log("SORT", option)
+
+
 def main():
     show_banner()
     check_folders()
@@ -317,6 +342,9 @@ def main():
 
     elif choice == "10":
         filter_menu(files)
+
+    elif choice == "11":
+        sort_menu(files)
 
     elif choice == "0":
         print("Goodbye!")
