@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 4.0
+# Version: 4.1
 
 from logger import write_log
 from config import (
@@ -34,6 +34,7 @@ from file_manager import (
     batch_move,
     batch_delete,
     search_files,
+    filter_files,
     get_valid_file,
     get_non_empty_name,
 )
@@ -95,6 +96,7 @@ def show_menu():
     print("7. Batch Move")
     print("8. Batch Delete")
     print("9. Search File")
+    print("10. Filter Files")
     print("0. Exit")
 
 
@@ -240,6 +242,32 @@ def search_menu(files):
     )
 
 
+def filter_menu(files):
+    extension = input(
+        "\nEnter extension (jpg/png/pdf): "
+    ).strip()
+
+    if not extension:
+        print("\n❌ Extension cannot be empty.")
+        return
+
+    results = filter_files(files, extension)
+
+    if not results:
+        print(f"\n❌ No .{extension} files found.")
+        return
+
+    print(f"\n✅ Found {len(results)} .{extension} file(s):\n")
+
+    for i, file in enumerate(results, start=1):
+        print(f"{i}. {file.name}")
+
+    write_log(
+        "FILTER",
+        extension
+    )
+
+
 def main():
     show_banner()
     check_folders()
@@ -286,6 +314,9 @@ def main():
 
     elif choice == "9":
         search_menu(files)
+
+    elif choice == "10":
+        filter_menu(files)
 
     elif choice == "0":
         print("Goodbye!")

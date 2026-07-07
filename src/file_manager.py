@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 4.0
+# Version: 4.1
 
 from pathlib import Path
 from shutil import copy2, move
@@ -289,6 +289,18 @@ def search_files(files, keyword):
 
     for file in files:
         if keyword in file.name.lower():
+            results.append(file)
+
+    return results
+
+
+def filter_files(files, extension):
+    extension = extension.lower().strip().lstrip(".")
+
+    results = []
+
+    for file in files:
+        if file.suffix.lower() == f".{extension}":
             results.append(file)
 
     return results
