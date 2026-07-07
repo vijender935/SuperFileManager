@@ -1,3 +1,4 @@
+
 from pathlib import Path
 
 # ========= PROJECT INFO =========
@@ -14,3 +15,8 @@ BACKUP_DIR = PROJECT_ROOT / "backup"
 LOG_DIR = PROJECT_ROOT / "logs"
 DOCS_DIR = PROJECT_ROOT / "docs"
 TESTS_DIR = PROJECT_ROOT / "tests"
+
+# Image Resize Settings
+DEFAULT_WIDTH = 1080
+DEFAULT_HEIGHT = 2340
+SUPPORTED_IMAGE_FORMATS = (".jpg", ".jpeg", ".png", ".webp")

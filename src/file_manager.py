@@ -4,6 +4,7 @@
 
 from pathlib import Path
 from shutil import copy2, move
+from PIL import Image
 
 
 def create_folder(folder):
@@ -335,3 +336,17 @@ def get_statistics(files):
         "total_size": total_size,
         "image_files": image_files,
     }
+
+
+def resize_image(source, destination, width, height):
+    try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+
+        with Image.open(source) as img:
+            resized = img.resize((width, height), Image.LANCZOS)
+            resized.save(destination)
+
+        return True, destination
+
+    except Exception as e:
+        return False, str(e)

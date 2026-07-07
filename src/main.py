@@ -12,6 +12,9 @@ from config import (
     LOG_DIR,
     DOCS_DIR,
     TESTS_DIR,
+    DEFAULT_WIDTH,
+    DEFAULT_HEIGHT,
+    SUPPORTED_IMAGE_FORMATS,
 )
 
 from file_manager import (
@@ -37,6 +40,7 @@ from file_manager import (
     filter_files,
     sort_files,
     get_statistics,
+    resize_image,
     get_valid_file,
     get_non_empty_name,
 )
@@ -101,6 +105,7 @@ def show_menu():
     print("10. Filter Files")
     print("11. Sort Files")
     print("12. File Statistics")
+    print("13. Resize Image")
     print("0. Exit")
 
 
@@ -367,6 +372,30 @@ def main():
 
     elif choice == "12":
         statistics_menu(files)
+
+    elif choice == "13":
+        number = get_valid_file(files)
+
+        destination = OUTPUT_DIR / files[number].name
+
+        success, result = resize_image(
+            files[number],
+            destination,
+            DEFAULT_WIDTH,
+            DEFAULT_HEIGHT,
+        )
+
+        if success:
+            print("\n✅ Image resized successfully!")
+            print(result)
+
+            write_log(
+                "RESIZE",
+                f"{files[number].name} -> {result.name}"
+            )
+
+        else:
+            print(f"\n❌ {result}")
 
     elif choice == "0":
         print("Goodbye!")
