@@ -1,6 +1,6 @@
 # SuperFileManager
 # main.py
-# Version: 2.7
+# Version: 2.8
 
 from logger import write_log
 from config import (
@@ -30,6 +30,7 @@ from file_manager import (
     move_file,
     delete_file,
     batch_rename,
+    batch_copy,
     get_valid_file,
     get_non_empty_name,
 )
@@ -102,6 +103,7 @@ def main():
     print("3. Move File")
     print("4. Delete File")
     print("5. Batch Rename")
+    print("6. Batch Copy")
     print("0. Exit")
 
     choice = input("\nEnter your choice: ").strip()
@@ -186,6 +188,19 @@ def main():
 
             write_log(
                 "BATCH RENAME",
+                f"{old_name} -> {new_name}"
+            )
+
+    elif choice == "6":
+        copied_files = batch_copy(files, OUTPUT_DIR)
+
+        print("\n✅ Batch Copy Completed!\n")
+
+        for old_name, new_name in copied_files:
+            print(f"{old_name}  →  {new_name}")
+
+            write_log(
+                "BATCH COPY",
                 f"{old_name} -> {new_name}"
             )
 

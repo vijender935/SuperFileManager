@@ -1,6 +1,6 @@
 # SuperFileManager
 # file_manager.py
-# Version: 2.7
+# Version: 2.8
 
 from pathlib import Path
 from shutil import copy2, move
@@ -220,6 +220,18 @@ def batch_rename(files, prefix):
         renamed.append((file.name, new_file.name))
 
     return renamed
+
+
+def batch_copy(files, destination_folder):
+    copied = []
+
+    for file in files:
+        success, result = copy_file(file, destination_folder)
+
+        if success:
+            copied.append((file.name, result.name))
+
+    return copied
 
 
 def get_valid_file(files):
