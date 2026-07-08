@@ -20,3 +20,6 @@ TESTS_DIR = PROJECT_ROOT / "tests"
 DEFAULT_WIDTH = 1080
 DEFAULT_HEIGHT = 2340
 SUPPORTED_IMAGE_FORMATS = (".jpg", ".jpeg", ".png", ".webp")
+
+# AI Output Settings
+AI_OUTPUT_DIR = OUTPUT_DIR / "AI_Enhanced"

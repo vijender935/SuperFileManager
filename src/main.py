@@ -1,8 +1,9 @@
 # SuperFileManager
 # main.py
-# Version: 6.3
+# Version: 7.0
 
 from logger import write_log
+from ai_processor import enhance_image
 from config import (
     PROJECT_NAME,
     VERSION,
@@ -15,6 +16,7 @@ from config import (
     DEFAULT_WIDTH,
     DEFAULT_HEIGHT,
     SUPPORTED_IMAGE_FORMATS,
+    AI_OUTPUT_DIR,
 )
 
 from file_manager import (
@@ -64,6 +66,7 @@ def check_folders():
         LOG_DIR,
         DOCS_DIR,
         TESTS_DIR,
+        AI_OUTPUT_DIR,
     ]
 
     for folder in folders:
@@ -112,6 +115,7 @@ def show_menu():
     print("14. Batch Resize Images")
     print("15. Convert Image Format")
     print("16. Batch Convert Images")
+    print("17. AI Image Enhancement")
     print("0. Exit")
 
 
@@ -490,6 +494,28 @@ def main():
                 "BATCH CONVERT",
                 f"{old_name} -> {new_name}"
             )
+
+    elif choice == "17":
+        number = get_valid_file(files)
+
+        destination = AI_OUTPUT_DIR / files[number].name
+
+        success, result = enhance_image(
+            files[number],
+            destination,
+        )
+
+        if success:
+            print("\n✅ AI Enhancement Complete")
+            print(result)
+
+            write_log(
+                "AI ENHANCE",
+                f"{files[number].name} -> {result.name}"
+            )
+
+        else:
+            print(result)
 
     elif choice == "0":
         print("Goodbye!")
