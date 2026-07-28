@@ -343,7 +343,7 @@ def resize_image(source, destination, width, height):
         destination.parent.mkdir(parents=True, exist_ok=True)
 
         with Image.open(source) as img:
-            resized = img.resize((width, height), Image.LANCZOS)
+            resized = img.resize((width, height), Image.Resampling.LANCZOS)
             resized.save(destination)
 
         return True, destination
