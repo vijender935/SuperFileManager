@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pylint pillow
+          pip install pylint "pillow==9.5.0"
 
       - name: Run Pylint
         run: |
